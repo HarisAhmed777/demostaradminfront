@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { BsFillArchiveFill, BsFillGrid3X3GapFill, BsPeopleFill } from 'react-icons/bs';
-
+import { baseUrl } from "../../baseurl";
 function DisplayingCards() {
     const [counts, setCounts] = useState({
         bookingsCount: 0,
@@ -18,7 +18,7 @@ function DisplayingCards() {
     useEffect(() => {
         const fetchCounts = async () => {
             try {
-                const response = await axios.get("http://localhost:8888/countsofall");
+                const response = await axios.get(`${baseUrl}/countsofall`);
                 setCounts(response.data);
             } catch (error) {
                 console.error("Error fetching counts", error);
