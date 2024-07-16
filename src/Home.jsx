@@ -6,6 +6,7 @@ import
  { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line } 
  from 'recharts';
 import DisplayingCards from './components/displayingcards';
+import Cal from './components/cal';
 
 function Home() {
 
@@ -106,7 +107,9 @@ function Home() {
                 <Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{ r: 8 }} />
                 <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
                 </LineChart>
+    
             </ResponsiveContainer>
+            <Cal/>
 
         </div>
     </main>

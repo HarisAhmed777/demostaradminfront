@@ -3,6 +3,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons';
 import { baseUrl } from "../../../baseurl";
+import * as xlsx from 'xlsx';
+import { saveAs } from 'file-saver';
 
 function Allbookings() {
     const [data, setData] = useState([]);
@@ -55,10 +57,30 @@ function Allbookings() {
         booking.persons.toString().includes(searchTerm.toLowerCase()) ||
         booking.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
         booking.city.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        // booking.mobile.toLowerCase().includes(searchTerm.toLowerCase()) ||
         booking.startdate.toLowerCase().includes(searchTerm.toLowerCase()) ||
         booking.enddate.toLowerCase().includes(searchTerm.toLowerCase())
     );
+
+    const handledownload = () => {
+        const headers = ["Name", "Age", "Persons", "Mail ID", "City", "Mobile Number", "Start Date", "End Date"];
+        const bookingData = data.map(booking => [
+            booking.name,
+            booking.age,
+            booking.persons,
+            booking.email,
+            booking.city,
+            booking.mobile,
+            new Date(booking.startdate).toLocaleDateString(),
+            new Date(booking.enddate).toLocaleDateString()
+        ]);
+
+        const wb = xlsx.utils.book_new();
+        const ws = xlsx.utils.aoa_to_sheet([headers, ...bookingData]);
+
+        xlsx.utils.book_append_sheet(wb, ws, "Sheet1");
+        const blob = xlsx.write(wb, { bookType: 'xlsx', type: 'base64' });
+        saveAs(blob, 'bookings.xlsx');
+    };
 
     return (
         <div className="container mt-4">
@@ -73,6 +95,7 @@ function Allbookings() {
                 />
             </div>
             <div className="table-responsive">
+                <button onClick={handledownload} className="btn btn-primary mb-4">Download CSV</button>
                 <table className="table bg-dark table-striped table-bordered">
                     <thead className="thead-dark">
                         <tr>
